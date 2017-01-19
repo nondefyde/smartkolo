@@ -27,8 +27,8 @@
         "drivers": {
             "mailgun": {
                 "auth": {
-                    "domain": "sandbox6b7f8edfcc024e909aa920da19b561c7.mailgun.org",
-                    "api_key": "key-c4d58c0683befb70eda27124cbaa82f6"
+                    "domain": "sandbox825388e66663479a9b230b6e0e4f780c.mailgun.org",
+                    "api_key": "key-3a6306ca25b9860b5a2b6d22ba69f756"
                 }
             },
             "sendgrid": {
