@@ -41,12 +41,7 @@ router.use(checkToken);
 router.param('user_id',UserController.userIdParam);
 router.route('/users/by-email/:email')
     .get(UserController.getUserByEmail);
-router.get('/users/:user_id/followers',UserController.getUserFollowers);
-router.get('/users/:user_id/following',UserController.getUserFollowing);
-router.get('/users/:user_id/follows-count',UserController.getUserFollowsCount);
 
-router.post('/users/follow',UserController.followUser);
-router.post('/users/unfollow',UserController.unfollowUser);
 router.route('/users/:user_id')
     .get(UserController.findOne)
     .put(updateAvatar.single('avatar'),UserController.update);

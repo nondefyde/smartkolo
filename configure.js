@@ -1,5 +1,5 @@
 /**
- * Created by Malcom on 9/9/2016.
+ * Created by Ekaruztech on 9/9/2016.
  */
 var config = require('config');
 var mongoose = require('mongoose');

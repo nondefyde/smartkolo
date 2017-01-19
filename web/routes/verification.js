@@ -1,5 +1,5 @@
 /**
- * Created by Malcom on 12/17/2016.
+ * Created by Ekaruztech on 12/17/2016.
  */
 
 var config = require('config');
