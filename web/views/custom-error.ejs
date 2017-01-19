@@ -1,0 +1,16 @@
+
+<% layout('layout/default') %>
+<div class="col-sm-8 col-sm-offset-2 mt-100">
+<div class="panel panel-default">
+<div class="panel-heading" style="background-color: #D68D02!important;">
+<p class="text-center"><img src="/img/spotagory.JPG" class="text-center"></p>
+</div>
+<div class="panel-body">
+    <h3 class="text-danger"><i class="fa fa-times-circle-o"></i> Error!</h3>
+    <% if(typeof error !="undefined"){ %>
+    <p class="text-danger"> <%- error %> </p>
+    <% } %>
+
+</div>
+</div>
+</div>

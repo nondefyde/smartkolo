@@ -1,0 +1,60 @@
+{
+    "app":
+    {
+        "name": "smartkolo",
+        "port": 7000,
+        "baseUrl": "localhost:7000"
+    },
+    "api":
+    {
+        "prefix": "/api",
+        "lang": "en",
+        "versions": [1]
+    },
+    "authToken":{
+        "superSecret":"mrltksooa",
+        "expiresIn" : 86400
+    },
+    "db": {
+            "url": "mongodb://smartkolo:smartkolo@ds117859.mlab.com:17859/smartkolo"
+    },
+    "twilio":{
+        "ACCOUNT_SID":"ACf119c9df7586ed00d6710d6a0fb83da4",
+        "AUTH_TOKEN":"3d10a9a7a02b46188c6e9f983d18c470",
+        "FROM":"+12138630531"
+    },
+    "email": {
+        "drivers": {
+            "mailgun": {
+                "auth": {
+                    "domain": "sandbox6b7f8edfcc024e909aa920da19b561c7.mailgun.org",
+                    "api_key": "key-c4d58c0683befb70eda27124cbaa82f6"
+                }
+            },
+            "sendgrid": {
+                "auth": {
+                    "api_user": "benmalcom",
+                    "api_key": "Benny_95"
+                }
+            }
+        },
+        "from":"noreply@spotagory.com"
+    },
+    "googleMapsOptions": {
+        "provider": "google",
+        "httpAdapter": "https",
+        "apiKey": "AIzaSyDQmO7eDIifg9LKlqFUwiLWNfv8dR7x8Qo",
+        "formatter": null
+    },
+    "itemsPerPage": {
+        "default": 10
+    },
+    "aws": {
+        "credentials": {
+            "accessKeyId": "AKIAJDCCOFR3ZUWOI7OA",
+            "secretAccessKey": "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",
+            "region": "us-west-2"
+        },
+        "bucket": "smartkolo"
+    }
+}

@@ -1,0 +1,45 @@
+{
+  "name": "spotagory",
+  "version": "0.0.0",
+  "private": true,
+  "engines": {
+    "node": "6.9.1"
+  },
+  "scripts": {
+    "postinstall": "bower install",
+    "start": "node app"
+  },
+  "dependencies": {
+    "aws-sdk": "^2.7.13",
+    "bcrypt-nodejs": "0.0.3",
+    "body-parser": "~1.15.1",
+    "bower": "^1.7.9",
+    "config": "^1.21.0",
+    "cookie-parser": "~1.4.3",
+    "debug": "~2.2.0",
+    "ejs": "~2.4.1",
+    "ejs-mate": "^2.3.0",
+    "express": "~4.13.4",
+    "express-flash": "0.0.2",
+    "express-session": "^1.14.2",
+    "jsonwebtoken": "^7.1.9",
+    "mongo-sanitize": "^1.0.0",
+    "mongoose": "^4.6.3",
+    "morgan": "~1.7.0",
+    "multer": "^1.2.0",
+    "multer-s3": "^2.5.0",
+    "node-geocoder": "^3.15.1",
+    "node-uuid": "^1.4.7",
+    "nodemailer": "^2.6.4",
+    "nodemailer-mailgun-transport": "^1.2.2",
+    "nodemailer-sendgrid-transport": "^0.2.0",
+    "q": "^1.4.1",
+    "sanitize-html": "^1.13.0",
+    "serve-favicon": "~2.3.0",
+    "twilio": "^2.11.0",
+    "underscore": "^1.8.3",
+    "valid-objectid": "0.0.2",
+    "validator": "^6.2.0",
+    "validatorjs": "^3.7.0"
+  }
+}
