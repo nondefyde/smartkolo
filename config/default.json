@@ -28,17 +28,17 @@
             "mailgun": {
                 "auth": {
                     "domain": "sandbox6b7f8edfcc024e909aa920da19b561c7.mailgun.org",
-                    "api_key": "key-c4d58c0683befb70eda27124cbaa82f6"
+                    "api_key":"key-c4d58c0683befb70eda27124cbaa82f6"
                 }
             },
             "sendgrid": {
                 "auth": {
-                    "api_user": "benEkaruztech",
-                    "api_key": "Benny_95"
+                    "api_user": "benmalcom",
+                    "api_key":"Benny_95"
                 }
             }
         },
-        "from":"noreply@ekaruztech.com"
+        "from":"noreply@mytoddlr.com"
     },
     "googleMapsOptions": {
         "provider": "google",
