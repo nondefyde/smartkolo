@@ -1,6 +1,6 @@
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
-var User=require("../web/models/user");
+var User=require("../models/user");
 
 //stores user ID in the session to be used by deserializeUser
 passport.serializeUser(function(user, done) {
@@ -20,7 +20,7 @@ passport.use("local-login",new LocalStrategy({
         passReqToCallback: true
     },
     function(req, username, password, done) {
-        User.findOne({ username: username }, function(err, user) {
+        User.findOne({ username: username.toLowerCase()}, function(err, user) {
 
             if (err) { return done(err); }
             if (!user) {

@@ -1,5 +1,5 @@
 var passport=require("passport");
-var configPassport=require("./passport");
+var configPassport=require("../settings/passport");
 
 var router = require('express').Router();
 var indexPageController = require('../controllers/indexPage');

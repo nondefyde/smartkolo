@@ -16,8 +16,8 @@
         "expiresIn" : 86400
     },
     "db": {
-            "url": "mongodb://smartkolo:smartkolo@ds117859.mlab.com:17859/smartkolo",
-//            "url": "mongodb://127.0.0.1/smartkolo"
+//         "url": "mongodb://smartkolo:smartkolo@ds117859.mlab.com:17859/smartkolo",
+           "url": "mongodb://127.0.0.1/smartkolo"
     },
     "twilio":{
         "ACCOUNT_SID":"ACf119c9df7586ed00d6710d6a0fb83da4",

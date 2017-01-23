@@ -1,6 +1,13 @@
 /**
  * Created by Ekaruztech on 12/17/2016.
  */
+//Import configure.js for settings
+var configure = require('./configure');
+
+//call configure.defaults() to set global variables
+configure.defaults();
+//call configure.mongoose() to configure mongoose
+configure.mongoose();
 
 var express = require('express');
 var path = require('path');
@@ -35,7 +42,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 //Sanitize req.body, req.query, req.params
 app.use(sanitize);
-//apiRoutes(app);
+//apiRoutes(app); //uncomment if you are working with api
 appRoutes(app);
 
 // catch 404 and forward to error handler
