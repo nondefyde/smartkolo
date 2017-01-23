@@ -1,6 +1,9 @@
 //Import configure.js for settings
 var configure = require('./configure');
 
+//settings to work with web
+var setting=require('./settings/settings');
+
 //call configure.defaults() to set global variables
 configure.defaults();
 //call configure.mongoose() to configure mongoose
@@ -40,10 +43,12 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+//call the settings to work with web
+setting(app);
 
 //Sanitize req.body, req.query, req.params
 app.use(sanitize);
-apiRoutes(app);
+//apiRoutes(app);
 appRoutes(app);
 
 // catch 404 and forward to error handler
