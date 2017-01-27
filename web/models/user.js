@@ -3,18 +3,38 @@ var Schema=mongoose.Schema;
 var bcrypt=require("bcrypt-nodejs");
 var crypto=require("crypto");
 
-var userSchema=new Schema({
-    username: {type: String,unique:true,lowercase:true,required: true},
-    name: {
-        fname: String,
-        lname: String
-    },
-    password: {type: String,required: true},
-    email:{type: String,unique:true,lowercase:true,required: true},
-    reg_date : {type: Date,default: Date.now()}
+var UserSchema=new Schema({
+    email : { type: String, unique : true, lowercase: true },
+    username : {type:String},
+    password : {type:String,minlength: 6},
+    first_name : { type: String},
+    last_name : { type: String},
+    mobile : { type: String},
+    sex : { type: String},
+    avatar: { type : String, default: ""},
+    bio: { type : String},
+    city: {type: String},
+    country: { type: String},
+    coordinates: [Number],
+    active : { type: Boolean, default: false},
+    verification_hash: {type:String, default: ""},
+    password_reset_token: {type:String},
+    password_reset_expiration: {type:Date},
+    account_verified : { type: Boolean, default: false}
+},{
+    timestamps: true
 });
 
-userSchema.pre("save",function(next){
+
+UserSchema.statics.createRules = function() {
+    return {
+        email : 'required|email',
+        password : 'required|min:6',
+        username : 'required|min:2',
+    }
+};
+
+UserSchema.pre("save",function(next){
     var user=this;
     if(!user.isModified("password")) return next();//go to next operation if password is not given a value
     bcrypt.genSalt(10,function(err,salt){
@@ -28,7 +48,9 @@ userSchema.pre("save",function(next){
 });
 
 //comparing the password in the database and the one user types in
-userSchema.methods.comparePassword=function(password){
+UserSchema.methods.comparePassword=function(password){
     return bcrypt.compareSync(password,this.password);
-}
-module.exports=mongoose.model("User",userSchema);
+};
+
+
+module.exports=mongoose.model("User",UserSchema);

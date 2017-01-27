@@ -1,5 +1,5 @@
 /**
- * Created by ILYASANATE on 22/01/2017.
+ * Created by Ekaruztech on 22/01/2017.
  */
 module.exports = {
     indexPage: function (req,res) {

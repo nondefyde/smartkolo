@@ -121,8 +121,6 @@ module.exports = {
                 .toCustom();
             return next(error);
         }
-
-
     },
     verifyCode: function (req, res, next) {
         var meta = {code:200, success:true},

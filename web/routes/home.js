@@ -1,5 +1,5 @@
 /**
- * Created by ILYASANATE on 20/01/2017.
+ * Created by Ekaruztech on 20/01/2017.
  */
 var router = require('express').Router();
 var homeController = require('../controllers/home');
