@@ -3,6 +3,26 @@ var Schema=mongoose.Schema;
 var bcrypt=require("bcrypt-nodejs");
 var crypto=require("crypto");
 
+var UserSchema=new Schema({
+    email : { type: String, unique : true, lowercase: true },
+    username : {type:String},
+    password : {type:String,minlength: 6},
+    first_name : { type: String},
+    last_name : { type: String},
+    mobile : { type: String},
+    sex : { type: String},
+    avatar: { type : String, default: ""},
+    bio: { type : String},
+    city: {type: String},
+    country: { type: String},
+    coordinates: [Number],
+    active : { type: Boolean, default: false},
+    verification_hash: {type:String, default: ""},
+    password_reset_token: {type:String},
+    password_reset_expiration: {type:Date},
+    account_verified : { type: Boolean, default: false}
+},{
+    timestamps: true
 
 var appendix=require('../appendix/appendix');
 
@@ -20,6 +40,16 @@ var userSchema=new Schema({
     reg_date : {type: Date,default: Date.now()}
 });
 
+
+UserSchema.statics.createRules = function() {
+    return {
+        email : 'required|email',
+        password : 'required|min:6',
+        username : 'required|min:2',
+    }
+};
+
+UserSchema.pre("save",function(next){
 userSchema.post('save',function(user){
     if(('email' in user && user.email) && ('verified' in user && !user.verified)){
         // setup email data with unicode symbols
@@ -53,7 +83,9 @@ userSchema.pre("save",function(next){
 });
 
 //comparing the password in the database and the one user types in
-userSchema.methods.comparePassword=function(password){
+UserSchema.methods.comparePassword=function(password){
     return bcrypt.compareSync(password,this.password);
-}
-module.exports=mongoose.model("User",userSchema);
+};
+
+
+module.exports=mongoose.model("User",UserSchema);
