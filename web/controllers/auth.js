@@ -1,11 +1,16 @@
 /**
  * Created by Ekaruztech on 23/01/2017.
  */
-var User = require('../models/user');
+var User = require('../models/user')
+    Validator = require('validatorjs');
 module.exports = {
 
     getLogin: function (req, res) {
         res.render("auth/login", {message: req.flash('msg1')});
+    },
+
+    postLogin: function (req, res) {
+
     },
 
     getregister: function (req, res) {
@@ -15,35 +20,33 @@ module.exports = {
 
         var obj = req.body,
             rules = User.createRules(),
-            validator = new Validator(obj,rules);
+            validator = new Validator(obj, rules);
 
-        if(validator.passes())
-        {
-            User.findOne({$or: [{email:obj.email},{username:obj.username}]}).exec()
+        if (validator.passes()) {
+            User.findOne({$or: [{email: obj.email}, {username: obj.username}]}).exec()
                 .then(function (existingUser) {
-                    if(existingUser) {
-                        if(!existingUser.account_verified)
-                        {
+                    if (existingUser) {
+                        if (!existingUser.account_verified) {
                             obj.verification_code = helper.generateOTCode();
-                            _.extend(existingUser,obj);
+                            _.extend(existingUser, obj);
                             existingUser.save(); // TODO: Take care of errors here
-                            req.flash("msg1","An unverified account is associated with this detail exists!");
+                            req.flash("msg1", "An unverified account is associated with this detail exists!");
                             res.redirect("/register");
                         }
                         else {
                             var message = "";
-                            if(existingUser.email == obj.email) message = "A user with this email already exists";
-                            if(existingUser.username == obj.username) message = "That username  has been taken";
-                            error =  helper.transformToError({code:409,message:message}).toCustom();
-                            req.flash("msg1",message);
+                            if (existingUser.email == obj.email) message = "A user with this email already exists";
+                            if (existingUser.username == obj.username) message = "That username  has been taken";
+                            error = helper.transformToError({code: 409, message: message}).toCustom();
+                            req.flash("msg1", message);
                             res.redirect("/register");
                         }
                     }
-                    obj.verification_hash =  bcrypt.hashSync(obj.email+Date.now(),bcrypt.genSaltSync(10));
-                    if(req.file && req.file.location)
+                    obj.verification_hash = bcrypt.hashSync(obj.email + Date.now(), bcrypt.genSaltSync(10));
+                    if (req.file && req.file.location)
                         obj.avatar = req.file.location;
-                    if(Object.hasOwnProperty.call(obj,'longitude') && Object.hasOwnProperty.call(obj,'latitude')){
-                        obj.coordinates = [obj.longitude,obj.latitude];
+                    if (Object.hasOwnProperty.call(obj, 'longitude') && Object.hasOwnProperty.call(obj, 'latitude')) {
+                        obj.coordinates = [obj.longitude, obj.latitude];
                         delete obj.longitude;
                         delete obj.latitude;
                     }
@@ -51,16 +54,15 @@ module.exports = {
                     return user.save();
                 })
                 .then(function (savedUser) {
-                    req.flash("msg1","Thank you! A verification link has been sent your email.");
+                    req.flash("msg1", "Thank you! A verification link has been sent your email.");
                     res.redirect("/register");
-                },function (err) {
-                    error =  helper.transformToError(err);
+                }, function (err) {
+                    error = helper.transformToError(err);
                     return next(error);
                 });
         }
-        else
-        {
-            req.flash("msg1","There are problems with your input");
+        else {
+            req.flash("msg1", "There are problems with your input");
             res.redirect("/register");
         }
 
@@ -111,7 +113,7 @@ module.exports = {
         // }
 
     },
-    logout: function(req,res){
+    logout: function (req, res) {
         req.session.destroy();
         req.logout();
         res.redirect("/");

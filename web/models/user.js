@@ -30,7 +30,7 @@ UserSchema.statics.createRules = function() {
     return {
         email : 'required|email',
         password : 'required|min:6',
-        username : 'required|min:2',
+        username : 'required|min:2'
     }
 };
 
