@@ -132,6 +132,4 @@ function IDGenerator(length) {
 
         return id;
     }
-
-
 }
