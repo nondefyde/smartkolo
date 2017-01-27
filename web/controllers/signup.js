@@ -2,13 +2,15 @@
  * Created by ILYASANATE on 23/01/2017.
  */
 var User=require('../models/user');
+var uuid = require('node-uuid');
+
 module.exports = {
 
     signupPage: function (req,res) {
         res.render("main/signup",{message: req.flash('msg1')});
     },
     singupPost: function(req,res,next){
-        if(req.body.username && req.body.fname && req.body.lname && req.body.email && req.body.cpassword && req.body.password){
+        if(req.body.username && req.body.fname && req.body.lname && req.body.email && req.body.phone && req.body.cpassword && req.body.password){
             if(req.body.password==req.body.cpassword){
                 User.findOne({username :req.body.username.toLowerCase()}, function(err,result){
                     if(err) return next(err);
@@ -32,14 +34,17 @@ module.exports = {
                             },
                             email: req.body.email,
                             password: req.body.password,
+                            phone: req.body.phone,
+                            activation_code: uuid.v1()
                         },function(err,user){
                             if(err) return next(err);
                             if(!user){
                                 req.flash("msg1","No user was created");
                                 res.redirect("/signup");
                             }
+
                             req.flash("msg1","Signup Successful");
-                            res.redirect("/signup");
+                            return res.redirect("/signup-success");
                         });
                     })
                 });

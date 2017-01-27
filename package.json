@@ -10,6 +10,7 @@
     "start": "node app"
   },
   "dependencies": {
+    "@nodemailer/pro": "^1.0.0",
     "aws-sdk": "^2.7.13",
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "~1.15.1",

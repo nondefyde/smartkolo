@@ -47,16 +47,16 @@ appRoutes(app);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-  var err = new Error('Not Found');
-  err.status = 404;
-  next(err);
+    var err = new Error('Not Found');
+    err.status = 404;
+    next(err);
 });
 
 // error handlers
 
 // development error handler
 // will print stacktrace
-if (app.get('env') === 'development') {
+/*if (app.get('env') === 'development') {
     app.use(function(err, req, res, next) {
         console.log("err ",JSON.stringify(err));
         var meta = {};
@@ -75,10 +75,10 @@ app.use(function(err, req, res, next) {
         meta.error.messages = err.messages;
     return res.status(meta.status_code).json(formatResponse.do(meta));
 });
-
+*/
 
 var server = http.createServer(app);
 server.listen(app.get('port'), function () {
-  console.log('app listening on port ',app.get('port'));
+    console.log('app listening on port ',app.get('port'));
 });
 module.exports = app;

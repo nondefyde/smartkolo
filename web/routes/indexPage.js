@@ -7,7 +7,7 @@ var indexPageController = require('../controllers/indexPage');
 router.route("/")
     .get(indexPageController.indexPage)
     .post(passport.authenticate('local-login', {
-        successRedirect: '/home',
+        successRedirect: '/check-activation',
         failureRedirect: '/',
         failureFlash: true })
      );

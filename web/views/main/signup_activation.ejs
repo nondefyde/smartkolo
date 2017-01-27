@@ -1,0 +1,15 @@
+<%- layout("template1")%>
+
+<!-- Main jumbotron for a primary marketing message or call to action -->
+
+<div class="container" style="margin-bottom: 30%">
+    <%if(successType=="new"){%>
+    <h1 class="text-success">SUCCESS !</h1>
+    <p>Your account is now activated. <a href="/">Click</a> to login</p>
+    <%}else{%>
+    <h1 class="text-success">ACCOUNT ALREADY ACTIVATED</h1>
+    <p>You have already activated your account. <a href="/">Click</a> to login</p>
+    <%}%>
+    <p>Thanks !!!</p>
+
+</div> <!-- /container -->
