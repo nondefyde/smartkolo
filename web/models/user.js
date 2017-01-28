@@ -8,16 +8,10 @@ var appendix=require('../appendix/appendix');
 var UserSchema=new Schema({
     email : { type: String, unique : true, lowercase: true },
     username : {type:String},
-    password : {type:String,minlength: 6},
+    password : {type:String,minlength: 4},
     first_name : { type: String},
     last_name : { type: String},
     mobile : { type: String},
-    sex : { type: String},
-    avatar: { type : String, default: ""},
-    bio: { type : String},
-    city: {type: String},
-    country: { type: String},
-    coordinates: [Number],
     active : { type: Boolean, default: false},
     verification_hash: {type:String, default: ""},
     password_reset_token: {type:String},
@@ -46,17 +40,20 @@ var UserSchema=new Schema({
 UserSchema.statics.createRules = function() {
     return {
         email : 'required|email',
-        password : 'required|min:6',
-        username : 'required|min:2'
+        password : 'required|min:4',
+        username : 'required|min:2',
+        first_name: 'required',
+        last_name: 'required',
+        mobile: 'required'
     }
 };
 
 UserSchema.post('save',function(user){
-    if(('email' in user && user.email) && ('verified' in user && !user.verified)){
+    if(('email' in user && user.email) && ('account_verified' in user && !user.account_verified)){
         // setup email data with unicode symbols
-        var userURL="http://localhost:7000/signup-activation/"+user._id+"/"+user.activation_code;
-        var message="<b>You recently apply for MGI account, please <a href='"+userURL+"'>click </a> "+
-            " to verify your account</b>";
+        var userURL="http://localhost:7000/signup-activation/"+user._id+"/"+user.verification_hash;
+        var message="<b>You recently applied for Zeedwin account, please click the link below " +
+            "to activate your account</b><br/> <a href='"+userURL+"'>"+userURL+"</a>"
         var from=' "Jimoh Hadi" <no-reply@gmail.com>';
         var to=user.email;
         var subject='Verify your MGI account ✔';
@@ -87,6 +84,8 @@ UserSchema.pre("save",function(next){
 UserSchema.methods.comparePassword=function(password){
     return bcrypt.compareSync(password,this.password);
 };
-
+UserSchema.methods.compareVerificationHash=function(verificationHash){
+    return verificationHash==this.verification_hash;
+};
 
 module.exports=mongoose.model("User",UserSchema);

@@ -3,6 +3,8 @@
  */
 var User = require('../models/user')
 var Validator = require('validatorjs');
+var helper=require('../../api/shared/helper');
+var bcrypt=require('bcrypt-nodejs');
 module.exports = {
 
     getLogin: function (req,res){
@@ -26,11 +28,11 @@ module.exports = {
                 .then(function (existingUser) {
                     if (existingUser) {
                         if (!existingUser.account_verified) {
-                            obj.verification_code = helper.generateOTCode();
-                            _.extend(existingUser, obj);
-                            existingUser.save(); // TODO: Take care of errors here
-                            req.flash("msg1", "An unverified account is associated with this detail exists!");
-                            res.redirect("/register");
+                           // obj.verification_code = helper.generateOTCode();
+                           // _.extend(existingUser, obj);
+                           // existingUser.save(); // TODO: Take care of errors here
+                            req.flash("msg1", "An unverified account associated with this detail exists!");
+                            res.redirect("/signup");
                         }
                         else {
                             var message = "";
@@ -38,23 +40,17 @@ module.exports = {
                             if (existingUser.username == obj.username) message = "That username  has been taken";
                             error = helper.transformToError({code: 409, message: message}).toCustom();
                             req.flash("msg1", message);
-                            res.redirect("/register");
+                            res.redirect("/signup");
                         }
                     }
+                    //if user does not exist and registering for the first time
                     obj.verification_hash = bcrypt.hashSync(obj.email + Date.now(), bcrypt.genSaltSync(10));
-                    if (req.file && req.file.location)
-                        obj.avatar = req.file.location;
-                    if (Object.hasOwnProperty.call(obj, 'longitude') && Object.hasOwnProperty.call(obj, 'latitude')) {
-                        obj.coordinates = [obj.longitude, obj.latitude];
-                        delete obj.longitude;
-                        delete obj.latitude;
-                    }
                     var user = new User(obj);
                     return user.save();
                 })
                 .then(function (savedUser) {
-                    req.flash("msg1", "Thank you! A verification link has been sent your email.");
-                    res.redirect("/register");
+                    req.flash("msg1", "Thank you! A verification link has been sent to your email.");
+                    res.redirect("/signup");
                 }, function (err) {
                     error = helper.transformToError(err);
                     return next(error);
@@ -62,7 +58,7 @@ module.exports = {
         }
         else {
             req.flash("msg1", "There are problems with your input");
-            res.redirect("/register");
+            res.redirect("/signup");
         }
 
         // if (req.body.username && req.body.fname && req.body.lname && req.body.email && req.body.cpassword && req.body.password) {
@@ -117,7 +113,7 @@ module.exports = {
         if(!req.user){
             return res.redirect("/");
         }
-        if(req.user.verified){
+        if(req.user.account_verified){
             return res.redirect("/home");
         }
         var user=req.user;
@@ -128,27 +124,28 @@ module.exports = {
     //To activate a user after clicking the link sent to his/her email to activate account
     signupActivation: function (req,res,next) {
         if(req.params.id && req.params.jo){
-            User.findOne({_id:req.params.id,activation_code: req.params.jo},function(err,result){
-                if(err){
-                    console.log(err);
-                    return res.send("<h1>Oops! Something went wrong</h1><h3>Your activation not successful. Try again...</h3>");
-                    //returnnext(err)
-                }
-
-                if(result){
-                    if(!result.verified){
-                        result.verified=true;
+            User.findById(req.params.id).exec()
+                .then(function(result){
+                if(result && result.compareVerificationHash(req.params.jo)){
+                    if(!result.account_verified){
+                        result.account_verified=true;
                         result.save(function(err){
                             if(err) throw err;
                             return res.render("auth/signup_activation",{successType: "new"});
                         })
                     }else {
-                        return res.render("auth/signup_activation",{successType: "already"})
+                        return res.render("auth/signup_activation",{successType: "already"});
                     }
                 }else{
-                    return res.send("<h1>Oops! Something went wrong</h1><h3>Your activation not successful. Try again...</h3>");
+                    return res.send("<h1>Oops! Something's wrong</h1><h3>Your activation not successful. Try again...</h3>");
                 }
-            });
+            },function(err){
+                    if(err){
+                        console.log(err);
+                        return res.send("<h1>Oops! An Error Occurrred</h1><h3>Your activation not successful. Try again...</h3>");
+                        //returnnext(err)
+                    }
+                })
         }else{
             res.status(404).send("<h1>404!</h1><h3> Page not found</h3>");
         }

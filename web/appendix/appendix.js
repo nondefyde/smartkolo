@@ -3,6 +3,7 @@
  */
 const nodemailer = require('@nodemailer/pro');
 var Q=require('q');
+var crypto=require("crypto");
 
 // create reusable transporter object using the default SMTP transport
 const transporter = nodemailer.createTransport({
