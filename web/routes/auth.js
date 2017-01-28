@@ -3,17 +3,27 @@
  */
 
 
-
+var passport=require("passport");
+var configPassport=require("../settings/passport");
 var router = require('express').Router();
 var authController = require('../controllers/auth');
 
 router.route('/signup')
-    .get(authController.getregister)
+    .get(authController.getRegister)
+    .post(authController.postRegister)
+
+router.route("/")
     .get(authController.getLogin)
+    .post(passport.authenticate('local-login', {
+        successRedirect: '/check-activation',
+        failureRedirect: '/',
+        failureFlash: true })
+    )
+
+
+router.get('/signup-activation/:id/:jo',authController.signupActivation)
+    .get('/signup-success',authController.signupSuccess)
+    .get('/check-activation',authController.checkActivation)
     .get("/logout",authController.logout)
-
-router.post('/register',authController.postRegister)
-    .post('/login', authController.postLogin);
-
 
 module.exports = router;

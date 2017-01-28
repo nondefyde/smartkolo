@@ -2,19 +2,18 @@
  * Created by Ekaruztech on 23/01/2017.
  */
 var User = require('../models/user')
-    Validator = require('validatorjs');
+var Validator = require('validatorjs');
 module.exports = {
 
-    getLogin: function (req, res) {
-        res.render("auth/login", {message: req.flash('msg1')});
+    getLogin: function (req,res){
+        if(req.user){
+            return res.redirect("/check-activation");
+        }
+        res.render("auth/login",{message: req.flash('loginMessage')});
     },
 
-    postLogin: function (req, res) {
-
-    },
-
-    getregister: function (req, res) {
-        res.render("auth/register", {message: req.flash('msg1')});
+    getRegister: function (req, res) {
+        res.render("auth/signup", {message: req.flash('msg1')});
     },
     postRegister: function (req, res, next) {
 
@@ -112,6 +111,51 @@ module.exports = {
         //     res.redirect("/signup");
         // }
 
+    },
+    //to check if a user has activated his account after reg and redirect user to appropriate page
+    checkActivation: function (req,res) {
+        if(!req.user){
+            return res.redirect("/");
+        }
+        if(req.user.verified){
+            return res.redirect("/home");
+        }
+        var user=req.user;
+
+        req.logout();
+        res.render("auth/check_activation",{user:user});
+    },
+    //To activate a user after clicking the link sent to his/her email to activate account
+    signupActivation: function (req,res,next) {
+        if(req.params.id && req.params.jo){
+            User.findOne({_id:req.params.id,activation_code: req.params.jo},function(err,result){
+                if(err){
+                    console.log(err);
+                    return res.send("<h1>Oops! Something went wrong</h1><h3>Your activation not successful. Try again...</h3>");
+                    //returnnext(err)
+                }
+
+                if(result){
+                    if(!result.verified){
+                        result.verified=true;
+                        result.save(function(err){
+                            if(err) throw err;
+                            return res.render("auth/signup_activation",{successType: "new"});
+                        })
+                    }else {
+                        return res.render("auth/signup_activation",{successType: "already"})
+                    }
+                }else{
+                    return res.send("<h1>Oops! Something went wrong</h1><h3>Your activation not successful. Try again...</h3>");
+                }
+            });
+        }else{
+            res.status(404).send("<h1>404!</h1><h3> Page not found</h3>");
+        }
+
+    },
+    signupSuccess: function (req,res) {
+        res.render("auth/signup_success");
     },
     logout: function (req, res) {
         req.session.destroy();
