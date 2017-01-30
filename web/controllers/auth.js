@@ -5,6 +5,7 @@ var User = require('../models/user')
 var Validator = require('validatorjs');
 var helper=require('../../api/shared/helper');
 var bcrypt=require('bcrypt-nodejs');
+var appendix=require('../appendix/appendix');
 module.exports = {
 
     getLogin: function (req,res){
@@ -23,7 +24,12 @@ module.exports = {
             rules = User.createRules(),
             validator = new Validator(obj, rules);
 
-        if (validator.passes()) {
+        if (validator.passes() && req.body.confirm_password) {
+            if(obj.confirm_password != obj.password){
+                req.flash("msg1", "Password not matched !");
+                return  res.redirect("/signup");
+            }
+
             User.findOne({$or: [{email: obj.email}, {username: obj.username}]}).exec()
                 .then(function (existingUser) {
                     if (existingUser) {
@@ -137,7 +143,7 @@ module.exports = {
                         return res.render("auth/signup_activation",{successType: "already"});
                     }
                 }else{
-                    return res.send("<h1>Oops! Something's wrong</h1><h3>Your activation not successful. Try again...</h3>");
+                    return res.send("<h1>Oops! Invalid Request</h1>");
                 }
             },function(err){
                     if(err){

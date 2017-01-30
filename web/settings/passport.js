@@ -24,10 +24,10 @@ passport.use("local-login",new LocalStrategy({
 
             if (err) { return done(err); }
             if (!user) {
-                return done(null, false, req.flash("loginMessage","Username doesn't exist"));
+                return done(null, false, req.flash("loginMessage","Invalid Username or Password"));//Username doesn't exist
             }
             if (!user.comparePassword(password)) {
-                return done(null, false, req.flash("loginMessage","Incorrect Password"));
+                return done(null, false, req.flash("loginMessage","Invalid Username or Password"));//Incorrect Password
             }
             return done(null, user);
         });
